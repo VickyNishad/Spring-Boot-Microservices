@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import com.users.userservice.exception.CustomeException;
 import com.users.userservice.pojo.UserRequest;
 import com.users.userservice.pojo.Users;
 import com.users.userservice.repository.UserRepository;
@@ -52,19 +53,27 @@ public class UserService implements UserInterface{
 			Users users = new Users();
 			List<Users> allUser = new ArrayList<>();
 			Iterable<Users> itrUsers = userRepository.findAll();
+			
+			if(allUser.isEmpty()) {
+				throw new CustomeException("data not found",null);
+			}
+			
+			
 			itrUsers.forEach(user->{
 				users.setUserid(user.getUserid());
 				users.setUser_name(user.getUser_name());
 				users.setUser_contact(user.getUser_contact());
 				users.setUser_email(user.getUser_email());
 				allUser.add(users);
+				throw new CustomeException("data not mismatch",null);
+				
 			});
 			return new ResponseEntity<List<Users>>(allUser,HttpStatus.OK);
 
 		} catch (Exception e) {
 			// TODO: handle exception
+			throw new CustomeException(e.getMessage());
 		}
-		return null;
 	}
 
 	@Override
@@ -87,5 +96,6 @@ public class UserService implements UserInterface{
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
 
 }
