@@ -5,56 +5,72 @@ package com.users.userservice.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.users.userservice.pojo.UserRequest;
-import com.users.userservice.service.UserInterface;
+import com.users.userservice.pojo.request.UserRequestModel;
+import com.users.userservice.pojo.response.UserResponseModel;
 import com.users.userservice.service.UserService;
+import com.users.userservice.utility.UserInterface;
+
+import jakarta.validation.Valid;
 
 /**
- * @author Vicky Nishad
+ * @author  
  *
  */
 @RestController
 @RequestMapping(UserController.BASE_URL)
+@Validated
 public class UserController implements UserInterface{
 	
 	// this is initial routes
-	public final static String BASE_URL="api/v1/user";
+	public final static String BASE_URL="api/service/user";
 	
 	@Autowired
 	private UserService userService;
 
 	@Override
-	@PostMapping
-	public ResponseEntity<?> submitDetails(@RequestBody UserRequest userRequest) {
+	@PostMapping("/submitDetails")
+	public ResponseEntity<UserResponseModel> submitDetails(@Valid @RequestBody UserRequestModel userRequestModel) {
 		// TODO Auto-generated method stub
-		return userService.submitDetails(userRequest);
+		return userService.submitDetails(userRequestModel);
 	}
 
 	@Override
-	@GetMapping
-	public ResponseEntity<?> getDetails() {
+	@PutMapping("/updateDetails")
+	public ResponseEntity<UserResponseModel> updateDetails(@RequestBody UserRequestModel userRequestModel) {
 		// TODO Auto-generated method stub
-		return userService.getDetails();
+		return userService.updateDetails(userRequestModel);
 	}
 
 	@Override
-	@GetMapping("/{userid}")
-	public ResponseEntity<?> getDetailById(@PathVariable String userid) {
+	@GetMapping("/getList")
+	public ResponseEntity<UserResponseModel> getList() {
 		// TODO Auto-generated method stub
-		return userService.getDetailById(userid);
+		return userService.getList();
 	}
 
 	@Override
-	public ResponseEntity<?> deleteDetails( String userid) {
+	@GetMapping("/getDetails/{user_id}")
+	public ResponseEntity<UserResponseModel> getDetails(@PathVariable String user_id) {
 		// TODO Auto-generated method stub
-		return null;
+		return userService.getDetails(user_id);
 	}
 
+	@Override
+	@DeleteMapping("/deleteDetails")
+	public ResponseEntity<UserResponseModel> deleteDetails(@PathVariable String user_id) {
+		// TODO Auto-generated method stub
+		return userService.deleteDetails(user_id);
+	}
+
+		
 }

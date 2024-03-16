@@ -22,7 +22,7 @@ public class GlobalCustomeException extends ResponseEntityExceptionHandler {
 	public GlobalCustomeException() {
 		// TODO Auto-generated constructor stub
 	}
-	
+
 	@ExceptionHandler(CustomeException.class)
 	protected ResponseEntity<?> requestNotfoundException(CustomeException customeException) {
 		// TODO Auto-generated method stub
@@ -32,6 +32,17 @@ public class GlobalCustomeException extends ResponseEntityExceptionHandler {
 	}
 	
 	
-	
+//	
+//	@ExceptionHandler(MethodArgumentNotValidException.class)
+//    public ResponseEntity<Object> handleValidationExceptions(MethodArgumentNotValidException ex) {
+//        BindingResult result = ex.getBindingResult();
+//        // Construct a map to hold field errors
+//        Map<String, String> errors = new HashMap<>();
+//        for (FieldError error : result.getFieldErrors()) {
+//            errors.put(error.getField(), error.getDefaultMessage());
+//        }
+//        // Return custom error response with field errors
+//        return ResponseEntity.badRequest().body(errors);
+//    }
 
 }
