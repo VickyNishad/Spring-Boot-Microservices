@@ -3,8 +3,11 @@
  */
 package com.users.userservice.controller;
 
+import java.util.UUID;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,11 +31,13 @@ import jakarta.validation.Valid;
  */
 @RestController
 @RequestMapping(UserController.BASE_URL)
-@Validated
 public class UserController implements UserInterface{
 	
 	// this is initial routes
 	public final static String BASE_URL="api/service/user";
+	
+	@Autowired
+	private KafkaTemplate<String, String> kafkaTemplate;
 	
 	@Autowired
 	private UserService userService;
@@ -70,6 +75,12 @@ public class UserController implements UserInterface{
 	public ResponseEntity<UserResponseModel> deleteDetails(@PathVariable String user_id) {
 		// TODO Auto-generated method stub
 		return userService.deleteDetails(user_id);
+	}
+	
+	@GetMapping("/send")
+	public String sendData() {
+        this.kafkaTemplate.send("message", UUID.randomUUID().toString());
+		return "message sent";
 	}
 
 		

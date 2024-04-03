@@ -24,6 +24,7 @@ public class ReuestEntityException {
         Map<String, String> errors = new HashMap<>();
         for (FieldError error : result.getFieldErrors()) {
             errors.put(error.getField(), error.getDefaultMessage());
+            System.out.println("error message ----"+error.getField() + error.getDefaultMessage());
         }
         // Return custom error response with field errors
         return ResponseEntity.badRequest().body(errors);
